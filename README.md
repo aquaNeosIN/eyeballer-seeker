@@ -10,9 +10,11 @@
 
 同一张图的 PDF：[`hardware/schematic.pdf`](hardware/schematic.pdf)
 
+转接板顶层、底层：[`hardware/pcb-top.png`](hardware/pcb-top.png)、[`hardware/pcb-bottom.png`](hardware/pcb-bottom.png)
+
 模块怎么连，看这张框图：[`hardware/block-diagram.png`](hardware/block-diagram.png)
 
-KiCad 工程：[`hardware/eyeballer-seeker.kicad_pro`](hardware/eyeballer-seeker.kicad_pro)（用 KiCad 7 或 8 打开。文件是 KiCad 7 的格式，8 也能开。）
+KiCad 工程：[`hardware/eyeballer-seeker.kicad_pro`](hardware/eyeballer-seeker.kicad_pro)（原理图和转接板。用 KiCad 7 或 8 打开。原理图是 KiCad 7 的格式。）旧版 Altium 打不开这些文件，看图用上面的 PDF 和 PNG。
 
 第一次用 GitHub、只想下载或看图：[`docs/github-beginner.md`](docs/github-beginner.md)
 
@@ -35,7 +37,7 @@ KiCad 工程：[`hardware/eyeballer-seeker.kicad_pro`](hardware/eyeballer-seeker
 | TPS61023 固定 5V 升压模块 | 把一块锂电池升到雷达要的 5V | 大约 3–10 元。搜索「TPS61023 5V 升压模块」 | 芯片说明：[TI TPS61023](https://www.ti.com/product/TPS61023) |
 | 3.7V 锂电池，插头 MX1.25 两针 | 给开发板充电口，同时分一路给升压 | 1000–2000 mAh 大约 15–40 元 | 插头要能插进板子上的 MX1.25 电池座 |
 | 拨动开关，电流至少 1A | 只关雷达，不关开发板 | 大约 1–3 元 | 普通滑动开关即可 |
-| 100nF 瓷片 ×2、22µF/10V 瓷片 ×1、100µF/10V 低 ESR 电解 ×1 | 升压输入、雷达 5V 旁边的电容 | 一起大约几元 | 见下面接线表里的 C1–C4 |
+| 100nF 瓷片 ×2、22µF/10V ×1、100µF/10V ×1 | 升压输入、雷达 5V 旁边的电容 | 一起大约几元 | 见下面接线表里的 C1–C4。板上按 0805 / 1206 瓷片画 |
 | 220Ω 电阻 ×2 | 串在串口两根线上 | 不到 1 元 | R1、R2 |
 
 官方原理图（本仓库的脚序以这份 PDF 为准）：
@@ -134,9 +136,15 @@ flowchart LR
 | 雷达 PA9 | 不接 | 有人/无人指示，这一版不用 |
 | H2 脚 1、3、4、5、6 | 不接 | 见上面的脚表 |
 
-原理图从左到右是电池、开关、升压、雷达。电池正极是上面那根实线，接到开发板 J1，开关从这根线上分出去，只给升压供电。地线在最下面，把电池负极、电容、升压、雷达和 J1 的地连在一起。H2 脚 2 也标着 GND，和下方地线是同一个网络。串口是两根实线，经过 220Ω 接到 H2 脚 7 和脚 8。
+原理图按功能分成五块：电池和开关、电池座 J1、5V 升压 TPS61023、雷达 HLK-LD2450、开发板排针 H2。电源用符号，同名就是连在一起：`VBAT`、`GND`、`+5V_RADAR`。标签 `BOOST_IN`、`RADAR_TX`、`RADAR_RX` 也是同名相连。`RADAR_TX` 从雷达发到 H2 脚 8，`RADAR_RX` 从 H2 脚 7 发到雷达。KiCad 8.0.9 电气检查：0 个错误，0 个警告。
 
 雷达串口以后固件要用 **256000 波特，8 数据位，无校验，1 停止位**。电平 3.3V。供电是 5V，这两件事不要混。
+
+## 转接板
+
+第一版转接板：[`hardware/eyeballer-seeker.kicad_pcb`](hardware/eyeballer-seeker.kicad_pcb)。40×36 mm 圆角矩形，两层，正反铺地。上面有电池座 J1、接到开发板电池座的 J2、开关 SW1、升压模块排针 J3、电容 C1–C4、雷达排针 J4、220Ω 的 R1 和 R2、接到 H2 的排针 J5。电源线 0.5 mm，信号线 0.25 mm。KiCad 8.0.9 设计规则检查：0 项违规，0 个未连接焊盘，和原理图一致。这一版先不打板。
+
+焊之前核对：J1 按 JST GH 画，要能配开发板的 MX1.25 插头；升压脚序暂按 1 VIN、2 GND、3 EN、4 VOUT；雷达脚序暂按 1 5V、2 GND、3 TX、4 RX；开关中间脚当公共端，封装 JS102011 很多只有大约 0.3 A，要能过 0.5 A；22µF 用 0805、100µF 用 1206 瓷片（10V，容量会随电压下降）。
 
 ## 电从哪来，能用多久
 
