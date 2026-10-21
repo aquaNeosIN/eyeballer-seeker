@@ -1,0 +1,14 @@
+# KiCad local / backup files
+*.kicad_prl
+fp-info-cache
+~*.lck
+*-backups/
+_autosave*
+*.kicad_sch-bak
+*.kicad_pcb-bak
+
+# ESP-IDF local build output
+firmware/build/
+firmware/sdkconfig
+firmware/sdkconfig.old
+firmware/managed_components/
