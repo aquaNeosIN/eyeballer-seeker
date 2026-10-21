@@ -82,7 +82,7 @@ target_compile_definitions(${COMPONENT_LIB} PRIVATE SIMULATE_RADAR=0)
 | 板子发送 TX | 17 | 雷达 RX |
 | 板子接收 RX | 18 | 雷达 TX |
 
-GPIO 编号以这两根线为准。排针第几脚，根目录 README 写了：本仓库原理图按官方 PDF 把 GPIO17 放在 H2 脚 7、GPIO18 放在脚 8。GitHub 上的 `HARDWARE_REFERENCE.md` 把脚 4 到脚 8 排成另一套。焊之前用万用表从芯片量到排针。
+GPIO 编号以这两根线为准。排针第几脚写在 [hardware/README.md](../hardware/README.md)：本仓库原理图按官方 PDF 把 GPIO17 放在 H2 脚 7、GPIO18 放在脚 8。GitHub 上的 `HARDWARE_REFERENCE.md` 把脚 4 到脚 8 排成另一套。焊之前用万用表从芯片量到排针。
 
 ## 四个任务
 
