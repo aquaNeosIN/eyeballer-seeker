@@ -1,0 +1,8 @@
+# ESP-IDF local build output
+firmware/build/
+firmware/sdkconfig
+firmware/sdkconfig.old
+firmware/managed_components/
+
+# Host test binary
+firmware/test/test_logic
